@@ -39,8 +39,8 @@ export default function Board({
       <div className="status flex justify-center text-2xl font-bold">
         {status}
       </div>
-
-      <div className="board border border-gray-300 rounded-md p-4 flex flex-col items-center">
+      {
+        /* <div className="board border border-gray-300 rounded-md p-4 flex flex-col items-center">
         <div className="board-row flex">
           <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
           <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -56,7 +56,27 @@ export default function Board({
           <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
           <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
         </div>
-      </div>
+      </div> */
+
+        <div className="board border border-gray-300 rounded-md p-4 flex flex-col items-center">
+          {/* Iterate through rows 0, 1, 2 */}
+          {[0, 1, 2].map((row) => (
+            <div key={row} className="board-row flex">
+              {/* Iterate through columns, assign square index, and render Square component */}
+              {[0, 1, 2].map((col) => {
+                const index = row * 3 + col;
+                return (
+                  <Square
+                    key={index}
+                    value={squares[index]}
+                    onSquareClick={() => handleClick(index)}
+                  />
+                );
+              })}
+            </div>
+          ))}
+        </div>
+      }
     </>
   );
 }
