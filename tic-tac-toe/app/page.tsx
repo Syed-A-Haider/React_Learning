@@ -12,8 +12,15 @@ export default function Game() {
   const [currentMove, setCurrentMove] = useState(0);
   const xIsNext = currentMove % 2 === 0;
 
+  // Toggle button for ascending or descending order of moves
+  const [isAscending, setIsAscending] = useState(true);
+
   // Currently viewed step in history
   const currentSquares = history[currentMove];
+
+  function handleToggleOrder() {
+    setIsAscending(!isAscending);
+  }
 
   function handlePlay(nextSquares: ("X" | "O" | null)[]) {
     // Get rid of any "future" history if we are not at the latest move
@@ -59,8 +66,18 @@ export default function Game() {
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
 
-      <div className="game-info">
-        <ol>{moves}</ol>
+      <div className="info-panel flex w-full justify-between">
+        <div className="game-info">
+          <ol>{isAscending ? moves : moves.reverse()}</ol>
+        </div>
+        <div className="toggle-order">
+          <button
+            className="btn border border-gray-300 rounded-md p-2 m-1 hover:bg-gray-500 transition-colors duration-200"
+            onClick={handleToggleOrder}
+          >
+            Toggle Move Order
+          </button>
+        </div>
       </div>
     </div>
   );

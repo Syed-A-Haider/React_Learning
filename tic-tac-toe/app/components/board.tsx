@@ -9,7 +9,12 @@ export default function Board({
   squares: ("X" | "O" | null)[];
   onPlay: (nextSquares: ("X" | "O" | null)[]) => void;
 }) {
-  const winner = calculateWinner(squares);
+  const winnerInfo = calculateWinner(squares);
+  const winnerSquares = winnerInfo ? winnerInfo[0] : null;
+  const winner = winnerInfo ? winnerInfo[1] : null;
+
+  console.log("Winner squares:", winnerSquares);
+
   let status;
   if (winner) {
     status = `Winner: ${winner}`;
@@ -70,6 +75,7 @@ export default function Board({
                     key={index}
                     value={squares[index]}
                     onSquareClick={() => handleClick(index)}
+                    winning={winnerSquares?.includes(index) ? true : false}
                   />
                 );
               })}
@@ -81,7 +87,10 @@ export default function Board({
   );
 }
 
-function calculateWinner(squares: ("X" | "O" | null)[]): "X" | "O" | null {
+// Function can either return an array of winning square indices and winner or null
+function calculateWinner(
+  squares: ("X" | "O" | null)[],
+): [number[], "X" | "O" | null] | null {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -99,7 +108,7 @@ function calculateWinner(squares: ("X" | "O" | null)[]): "X" | "O" | null {
 
     // If the squares at the three indices are the same and not null, return the winner
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+      return [[a, b, c], squares[a]];
     }
   }
   return null;
