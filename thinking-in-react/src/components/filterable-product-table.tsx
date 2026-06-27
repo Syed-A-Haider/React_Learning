@@ -100,9 +100,13 @@ const PRODUCTS: Product[] = [
 function SearchBar({
   filterText,
   inStockOnly,
+  onFilterTextChange,
+  onInStockOnlyChange,
 }: {
   filterText: string;
   inStockOnly: boolean;
+  onFilterTextChange: (filter: string) => void;
+  onInStockOnlyChange: (checked: boolean) => void;
 }) {
   return (
     <form className="mb-4 flex flex-col gap-2">
@@ -110,6 +114,7 @@ function SearchBar({
         type="text"
         placeholder="Search..."
         value={filterText}
+        onChange={(element) => onFilterTextChange(element.target.value)}
         className="w-full border border-gray-200 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
       />
       <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer justify-start pl-2 ">
@@ -117,6 +122,7 @@ function SearchBar({
           type="checkbox"
           className="cursor-pointer"
           checked={inStockOnly}
+          onChange={(element) => onInStockOnlyChange(element.target.checked)}
         />{" "}
         Only show products in stock
       </label>
@@ -130,7 +136,12 @@ export default function FilterableProductTable() {
 
   return (
     <div className=" m-3 bg-white rounded-xl shadow-sm border border-gray-100">
-      <SearchBar filterText={filterText} inStockOnly={inStockOnly} />
+      <SearchBar
+        filterText={filterText}
+        inStockOnly={inStockOnly}
+        onFilterTextChange={setFilterText}
+        onInStockOnlyChange={setInStockOnly}
+      />
       <ProductTable
         products={PRODUCTS}
         filterText={filterText}
